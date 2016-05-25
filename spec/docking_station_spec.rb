@@ -6,10 +6,10 @@ describe DockingStation do
 		expect(subject).to respond_to :release_bike
 	end
 
-	it "returns a working bike" do
-		bike = subject.release_bike
-		expect(bike).to be_working
-	end
+	# it "returns a working bike" do
+	# 	bike = subject.release_bike
+	# 	expect(bike).to be_working
+	# end
 
 	it "responds to dock" do
 		expect(subject).to respond_to(:dock).with(1).argument
@@ -29,4 +29,20 @@ describe DockingStation do
 		subject.dock(bike)
 		expect(subject.bike).to eq bike
 	end
+	
+	it "releases a previously docked bike" do
+		bike_inst = Bike.new
+		subject.dock(bike_inst)
+		expect(subject.release_bike).to eq bike_inst
+	end
+
+	describe '#release_bike' do
+		it 'raises an error when there are no bikes available' do
+			expect { subject.release_bike }.to raise_error 'No bikes available'
+		end
+	end
 end	
+
+# As a member of the public,
+# So that I am not confused and charged unnecessarily,
+# I'd like docking stations not to release bikes when there are none available.

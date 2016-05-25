@@ -1,4 +1,0 @@
-describe DockingStation do
-	# it 'returns "true" when a bike is present' do
-	# 	expect(dockingstation)
-end

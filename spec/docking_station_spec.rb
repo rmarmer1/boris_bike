@@ -6,6 +6,25 @@ describe DockingStation do
 		expect(subject).to respond_to :release_bike
 	end
 
+	# it "returns the *default* bike dock capacity if no argument is given" do
+	# 	doc = DockingStation.new
+	# 	p "==========="
+	# 	p doc.capacity
+	# 	p "==========="
+
+	# 	expect(doc.capacity).to eq 20
+	# end
+	it "sets the *default* capacity if no argument is given" do
+		DockingStation.new
+		20.times { subject.dock Bike.new }
+		expect { subject.dock(Bike.new)}.to raise_error "Docking station full: exceeded capacity"	
+	end
+
+	it "accepts a new number and reinitializes the bike dock capacity" do
+
+		DockingStation.new(1)
+	end	
+
 	# it "returns a working bike" do
 	# 	bike = subject.release_bike
 	# 	expect(bike).to be_working
@@ -16,20 +35,34 @@ describe DockingStation do
 	end
 
 	it "Docks a bike when passed one" do
-		bike = Bike.new
-		expect(subject.dock(bike)).to eq bike
+		#expect(subject.dock(Bike.new)).to eq bikes
+		expect(subject.dock(Bike.new))
 	end
 
-	it "responds to bike" do
-		expect(subject).to respond_to :bike
+	describe '#dock' do
+
+		it 'raises an error when user tries to dock more than 20 bikes' do
+			20.times { subject.dock Bike.new }
+			# subject.dock(Bike.new)
+			# p "=============="
+			# p subject.bikes.count
+			# p "=============="
+			expect { subject.dock(Bike.new)}.to raise_error "Docking station full: exceeded capacity"
+
+		end
 	end
 
-	it "returns docked bikes" do
-		bike = Bike.new
-		subject.dock(bike)
-		expect(subject.bike).to eq bike
+	it "responds to bikes" do
+		expect(subject).to respond_to :bikes
 	end
-	
+
+	it "returns number of docked bikes" do
+		# p "==========="
+		# p @bikes
+		# p "==========="
+		expect(@bikes)
+	end
+
 	it "releases a previously docked bike" do
 		bike_inst = Bike.new
 		subject.dock(bike_inst)
@@ -39,6 +72,20 @@ describe DockingStation do
 	describe '#release_bike' do
 		it 'raises an error when there are no bikes available' do
 			expect { subject.release_bike }.to raise_error 'No bikes available'
+		end
+	end
+
+	describe '#full?' do
+		it "tells user if dock is full or not" do
+			20.times { subject.dock Bike.new }
+			expect((subject.send :full?) == true)
+		end
+	end
+
+	describe '#empty?' do
+		it "tells user if dock is empty or not" do
+			DockingStation.new
+			expect ((subject.send :empty?) == true)
 		end
 	end
 end	

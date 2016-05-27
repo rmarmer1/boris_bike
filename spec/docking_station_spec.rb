@@ -14,10 +14,11 @@ describe DockingStation do
 
 	# 	expect(doc.capacity).to eq 20
 	# end
+
 	it "sets the *default* capacity if no argument is given" do
-		DockingStation.new
-		20.times { subject.dock Bike.new }
-		expect { subject.dock(Bike.new)}.to raise_error "Docking station full: exceeded capacity"	
+		doc = DockingStation.new
+		20.times { doc.dock Bike.new }
+		expect { doc.dock(Bike.new)}.to raise_error "Docking station full: exceeded capacity"	
 	end
 
 	it "accepts a new number and reinitializes the bike dock capacity" do
@@ -29,26 +30,23 @@ describe DockingStation do
 		subject.dock Bike.new 
 
 		bike = subject.release_bike
-		p "===================="
-		p bike
-		p "===================="
+
 		expect(bike).to be_working
 	end
 
 	it "allows a user to report a bike as broken when docking a bike" do
-		rental_bike = Bike.new
-		p "=====Before======"
-		p rental_bike.working
-		p "==========="
-		expect(rental_bike.working == false)
-		p "=====After======"
-		p rental_bike.working
-		p "==========="
+		expect(subject.dock(Bike.new, false))
+	end
 
+	it "sets a bike to broken when reported broke" do
+		bike = Bike.new
+		subject.dock(bike, false)
+		expect(bike.working).to eq false
 	end
 
 	it "responds to dock" do
 		expect(subject).to respond_to(:dock).with(1).argument
+		expect(subject).to respond_to(:dock).with(2).argument
 	end
 
 	it "Docks a bike when passed one" do

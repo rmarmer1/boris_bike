@@ -13,13 +13,22 @@ class DockingStation
 # in this case, @bike is actually 'nil' - which EVALUATES to 'false' (falsey)
 def release_bike 
 	fail 'No bikes available' if @bikes.empty?
-	@bikes.pop
+	
+	for i in 0...@bikes.length 
+		
+		if @bikes[i].working == true
+			# returns array element &&  deletes ithat element from array
+			return @bikes.delete_at(i)
+		end
+
+	end 
 end
+
+
 
 def dock(bike, working = true)
 	# changed greater than to greater than or equal to => made test pass!!!!
 	fail "Docking station full: exceeded capacity" if @bikes.count >= @capacity
-
 	@bikes << bike
 
 

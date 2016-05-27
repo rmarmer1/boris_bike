@@ -71,22 +71,38 @@ describe DockingStation do
 		expect(subject).to respond_to :bikes
 	end
 
-	it "returns number of docked bikes" do
-		# p "==========="
-		# p @bikes
-		# p "==========="
-		expect(@bikes)
-	end
-
-	it "releases a previously docked bike" do
-		bike_inst = Bike.new
-		subject.dock(bike_inst)
-		expect(subject.release_bike).to eq bike_inst
-	end
+	# it "returns number of docked bikes" do
+	# 	# p "==========="
+	# 	# p @bikes
+	# 	# p "==========="
+	# 	expect(bikes.count)
+	# end
 
 	describe '#release_bike' do
 		it 'raises an error when there are no bikes available' do
 			expect { subject.release_bike }.to raise_error 'No bikes available'
+		end
+
+		it "releases a previously docked bike" do
+			bike_inst = Bike.new
+			subject.dock(bike_inst)
+			expect(subject.release_bike).to eq bike_inst
+		end
+
+		it "shouldn't release a broken bike" do
+			bike = Bike.new
+			doc = DockingStation.new
+			doc.dock(bike, false)
+			doc.release_bike
+			expect(doc.bikes.count).to eq 1
+		end
+
+		it "should pass over a broken bike & release a working bike" do
+			doc = DockingStation.new
+			doc.dock(Bike.new, false)
+			doc.dock(Bike.new, true)
+			doc.dock(Bike.new, false)
+			expect(doc.release_bike.working).to eq true
 		end
 	end
 

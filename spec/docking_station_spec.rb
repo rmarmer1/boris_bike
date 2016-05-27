@@ -25,10 +25,27 @@ describe DockingStation do
 		DockingStation.new(1)
 	end	
 
-	# it "returns a working bike" do
-	# 	bike = subject.release_bike
-	# 	expect(bike).to be_working
-	# end
+	it "returns a working bike" do
+		subject.dock Bike.new 
+
+		bike = subject.release_bike
+		p "===================="
+		p bike
+		p "===================="
+		expect(bike).to be_working
+	end
+
+	it "allows a user to report a bike as broken when docking a bike" do
+		rental_bike = Bike.new
+		p "=====Before======"
+		p rental_bike.working
+		p "==========="
+		expect(rental_bike.working == false)
+		p "=====After======"
+		p rental_bike.working
+		p "==========="
+
+	end
 
 	it "responds to dock" do
 		expect(subject).to respond_to(:dock).with(1).argument

@@ -16,10 +16,22 @@ def release_bike
 	@bikes.pop
 end
 
-def dock(bike)
+def dock(bike, working = true)
 	# changed greater than to greater than or equal to => made test pass!!!!
 	fail "Docking station full: exceeded capacity" if @bikes.count >= @capacity
-	@bikes << bike
+	
+	p "========bike============"
+	p bike
+	p "========@bikes.count============"
+	p @bikes.count
+	p "=========working============"
+	p working
+	
+	bike.working = working
+	p "=========working============"
+	p working
+	p "=========bike.working============"
+	p bike.working
 
 end
 
